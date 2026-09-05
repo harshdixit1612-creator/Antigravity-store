@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Merchant Dashboard — AntiGravity Store</title>
+<style>
+:root{
+  --bg:#040b14; --panel:#0b1620; --accent:#2D81F7; --muted:#7f98ad;
+  --card:#0f1920; --success:#7af1c7; --danger:#ff6d73; --warning:#f7d46f;
+  --glass: rgba(255,255,255,0.03);
+  --glass-2: rgba(255,255,255,0.02);
+  --radius:14px; --mono: 'SFMono-Regular', Consolas, monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background:linear-gradient(180deg,#020a12,#040b14); color:#eaf6ff;}
+.page{max-width:1200px;margin:20px auto;padding:18px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;color:#dff7ff}
+.badge{background:rgba(255,255,255,0.02);padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);color:var(--accent);font-weight:700}
+.back{color:var(--muted);text-decoration:none;font-size:0.9rem}
+.grid-1{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.metric{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);padding:18px;border-radius:12px;min-height:88px}
+.metric .label{font-size:0.78rem;color:var(--muted);letter-spacing:0.06em}
+.metric .value{font-size:1.45rem;margin-top:8px;color:#eaf6ff;font-weight:800}
+.main-area{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+.panel{background:var(--panel);border-radius:var(--radius);padding:14px;border:1px solid rgba(255,255,255,0.03)}
+.table{width:100%;border-collapse:collapse;margin-top:8px}
+.table th{font-size:0.78rem;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.03)}
+.table td{padding:10px 10px;border-bottom:1px solid rgba(255,255,255,0.02);font-size:0.92rem}
+.status-b{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border-radius:999px;font-weight:700;font-size:0.82rem}
+.red{background:rgba(255,109,115,0.08);color:var(--danger);border:1px solid rgba(255,109,115,0.07)}
+.yellow{background:rgba(247,212,111,0.06);color:var(--warning);border:1px solid rgba(247,212,111,0.07)}
+.green{background:rgba(122,241,199,0.06);color:var(--success);border:1px solid rgba(122,241,199,0.07)}
+.right-column{display:flex;flex-direction:column;gap:12px}
+.advice-card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+.advice-card h4{margin:0 0 6px;font-size:1rem}
+.advice-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.icon-pill{font-size:1.4rem;margin-right:8px}
+.terminal{background:rgba(4,10,18,0.96);border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,0.03);font-family:var(--mono);color:#cfeafc;height:240px;overflow:auto}
+.audit-item{display:flex;justify-content:space-between;gap:12px;padding:8px;border-bottom:1px solid rgba(255,255,255,0.02);font-size:0.85rem;align-items:flex-start}
+.audit-left{color:var(--muted);width:50%}
+.log-time{font-size:0.75rem;color:var(--muted);margin-bottom:4px}
+.log-action{font-weight:700}
+.log-detail{color:var(--muted);word-break:break-word}
+.success{color:var(--success) !important}
+.declined{color:var(--danger) !important}
+.info{color:var(--muted) !important}
+.upsell-tracker{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+.progress{height:12px;background:var(--glass);border-radius:999px;overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),#72b8ff);border-radius:999px;width:0%}
+.controls{display:flex;gap:8px;align-items:center}
+.button{background:var(--accent);color:#04212d;padding:8px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+.small{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:7px 10px;border-radius:10px;cursor:pointer}
+.kv{display:flex;gap:6px;align-items:center}
+.empty{color:var(--muted);padding:12px;text-align:center}
+@media(max-width:980px){ .grid-1{grid-template-columns:repeat(2,1fr)} .main-area{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <div style="display:flex;gap:12px;align-items:center;">
+      <div class="brand">AntiGravity Store</div>
+      <a class="back" href="/">← Back to Store</a>
+    </div>
+    <div class="badge">Merchant Dashboard</div>
+  </div>
+
+  <!-- Metrics -->
+  <div class="grid-1" id="metrics-bar">
+    <div class="metric">
+      <div class="label">Total Orders Today</div>
+      <div class="value" id="ordersToday">0</div>
+    </div>
+    <div class="metric">
+      <div class="label">Total Revenue Today</div>
+      <div class="value" id="revenueToday">₹0</div>
+    </div>
+    <div class="metric">
+      <div class="label">Average Order Value</div>
+      <div class="value" id="aov">₹0</div>
+    </div>
+    <div class="metric">
+      <div class="label">Upsell Acceptance Rate</div>
+      <div class="value" id="upsellRate">0%</div>
+    </div>
+  </div>
+
+  <div class="main-area">
+    <!-- Left: Product performance + Audit Terminal -->
+    <div>
+      <div class="panel">
+        <strong>Product Performance</strong>
+        <table class="table" id="productTable" aria-live="polite">
+          <thead>
+            <tr>
+              <th>Product</th><th>Price</th><th>Times Selected</th><th>Revenue (₹)</th><th>Stock</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="productRows">
+            <tr><td colspan="6" class="empty">Loading products...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="panel">
+        <strong>Live Audit Terminal</strong>
+        <div id="terminal" class="terminal">Loading audit...</div>
+      </div>
+    </div>
+
+    <!-- Right: AI advisor + Upsell tracker -->
+    <div class="right-column">
+      <div class="advice-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div><strong>AI Merchant Advisor</strong><div style="color:var(--muted);font-size:0.86rem">Get 3 actionable tips from the AI</div></div>
+          <div class="controls">
+            <button id="getAdvice" class="button">Get AI Advice</button>
+            <button id="refreshBtn" class="small">Refresh</button>
+          </div>
+        </div>
+
+        <div class="advice-list" id="adviceList" style="margin-top:12px">
+          <div class="empty">No advice requested yet.</div>
+        </div>
+      </div>
+
+      <div class="upsell-tracker" style="margin-top:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><strong>Upsell Success Tracker</strong>
+          <div class="kv"><div id="upsellsSuggested">0</div>/<div id="upsellsAccepted">0</div></div>
+        </div>
+        <div style="font-size:0.85rem;color:var(--muted);margin-top:8px">Upsell success rate</div>
+        <div class="progress"><div class="progress-fill" id="upsellFill" style="width:0%"></div></div>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="panel">
+        <strong>Quick Controls</strong>
+        <div style="margin-top:8px;color:var(--muted);font-size:0.9rem">Auto-refresh: Metrics 3s, Audit 2s</div>
+        <div style="margin-top:10px;display:flex;gap:8px;">
+          <button id="manualRefresh" class="small">Refresh Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* merchant dashboard JS: reads /audit and /catalog and renders metrics,
+   table, terminal, advice panel and upsell tracker. */
+
+const AUDIT_URL = '/audit';
+const CATALOG_URL = '/catalog';
+const ADVICE_URL = '/merchant/advice';
+
+// helper parse
+function money(n){ return '₹' + Number(n||0).toLocaleString('en-IN'); }
+
+async function fetchJson(url, opts){ try{ const r=await fetch(url,opts); return await r.json(); }catch(e){ return null }}
+
+function isoDateFromTimestamp(ts){
+  // expect "YYYY-MM-DD HH:MM:SS" possibly
+  if(!ts) return null;
+  return ts.split(' ')[0];
+}
+
+function todaysISO(){ return new Date().toISOString().slice(0,10); }
+
+// compute metrics & derived stats
+function computeFromAudit(audit, catalog){
+  // audit array is newest-first from API; convert to chronological order
+  const logs = (Array.isArray(audit)?audit.slice().reverse():[]);
+  const today = todaysISO();
+  let ordersToday=0, revenueToday=0, orderAmounts=[];
+  let upsellSuggestedIndices = [];
+  let upsellAcceptedCount = 0;
+  let upsellSuggestedCount = 0;
+
+  // product stats
+  const products = {};
+  catalog.forEach(p=> products[p.id] = {
+    id:p.id, name:p.name, price: p.price||0, stock: p.stock||0, times:0, revenue:0
+  });
+
+  // We'll track last AI Decision selected products (by name matches)
+  let lastSelected = [];
+
+  // iterate chronological
+  logs.forEach((log,i)=>{
+    const action = log.action || '';
+    const detail = log.detail || '';
+    const status = (log.result||'').toLowerCase();
+
+    // attribute AI Decision selections: try to detect product names
+    if(action.toLowerCase().includes('ai decision')){
+      // for each product, check if name occurs in detail (case-insensitive)
+      lastSelected = [];
+      Object.values(products).forEach(p=>{
+        if(detail && detail.toLowerCase().includes(p.name.toLowerCase())){
+          products[p.id].times = (products[p.id].times||0) + 1;
+          lastSelected.push(p.id);
+        }
+      });
+    }
+
+    if(action.toLowerCase().includes('upsell')){
+      if(status==='success') {
+        upsellSuggestedCount += 1;
+        // mark index for potential acceptance
+        upsellSuggestedIndices.push(i);
+      }
+    }
+
+    if(action.toLowerCase().includes('checkout') && status==='success'){
+      // parse amount from detail like "Created order ... for ₹499"
+      const m = (detail||'').match(/₹\s*([0-9,]+)/);
+      const amt = m ? Number(m[1].replace(/,/g,'')) : null;
+      // parse date and check today
+      const ts = log.timestamp || '';
+      if(isoDateFromTimestamp(ts) === today) {
+        ordersToday += 1;
+        revenueToday += (amt||0);
+        if(amt) orderAmounts.push(amt);
+      }
+      // attribute revenue to lastSelected product(s) if present
+      if(lastSelected && lastSelected.length>0 && amt){
+        // split equally
+        const per = Math.round(amt/lastSelected.length);
+        lastSelected.forEach(pid=>{
+          if(products[pid]) products[pid].revenue += per;
+        });
+      } else {
+        // fallback: try to heuristically match product names in previous AI Decision entries (scan back)
+        // nothing to do if cannot attribute
+      }
+
+      // determine acceptance: any previously suggested upsell index earlier than this checkout -> count as accepted
+      // since logs is chronological, find if there is any upsell index < i
+      if(upsellSuggestedIndices.some(idx => idx < i)) {
+        upsellAcceptedCount += 1;
+        // remove used suggested to avoid double count
+        upsellSuggestedIndices = upsellSuggestedIndices.filter(idx => idx >= i);
+      }
+    }
+  });
+
+  // totals & AOV
+  const aov = ordersToday>0 ? Math.round(revenueToday / ordersToday) : 0;
+  // product statuses
+  const rows = Object.values(products).map(p=>{
+    const status = (p.stock < 3) ? 'red' : (p.times === 0 ? 'yellow' : 'green');
+    const statusText = (p.stock < 3) ? '🔴 Restock' : (p.times === 0 ? '🟡 Slow' : '🟢 Selling');
+    return Object.assign({},p,{status, statusText});
+  });
+
+  return {
+    ordersToday, revenueToday, aov,
+    upsellSuggestedCount, upsellAcceptedCount,
+    upsellRate: upsellSuggestedCount>0 ? Math.round(upsellAcceptedCount/upsellSuggestedCount*100) : 0,
+    productRows: rows,
+    auditLogs: logs
+  };
+}
+
+// render functions
+function renderMetrics(m){
+  document.getElementById('ordersToday').textContent = m.ordersToday;
+  document.getElementById('revenueToday').textContent = money(m.revenueToday);
+  document.getElementById('aov').textContent = money(m.aov);
+  document.getElementById('upsellRate').textContent = m.upsellRate + '%';
+}
+
+function renderProductTable(rows){
+  const tbody = document.getElementById('productRows');
+  if(!rows || rows.length===0){ tbody.innerHTML = '<tr><td colspan="6" class="empty">No products</td></tr>'; return;}
+  tbody.innerHTML = rows.map(p=>`
+    <tr>
+      <td style="min-width:220px">${p.name}</td>
+      <td>${money(p.price)}</td>
+      <td>${p.times}</td>
+      <td>${money(p.revenue)}</td>
+      <td>${p.stock}</td>
+      <td><span class="status-b ${p.status==='red'?'red':p.status==='yellow'?'yellow':'green'}">${p.statusText}</span></td>
+    </tr>
+  `).join('');
+}
+
+function renderTerminal(logs){
+  const term = document.getElementById('terminal');
+  if(!logs || logs.length===0){ term.innerHTML = '<div class="empty">No audit activity yet.</div>'; return;}
+  // show newest first (reverse chronological)
+  const last10 = logs.slice(-10).reverse();
+  term.innerHTML = last10.map(l=>{
+    const status = (l.result||'').toLowerCase().trim();
+    const cls = status==='success' ? 'success' : status==='declined' ? 'declined' : 'error' === status ? 'declined' : 'info';
+    const statusBadge = status==='success' ? '✓' : status==='declined' ? '✗' : '◯';
+    return `<div class="audit-item"><div class="audit-left"><div class="log-time">${l.timestamp}</div><div class="log-action ${cls}">${l.action}</div></div><div style="flex:1" class="log-detail">${l.detail}</div><div style="min-width:80px;text-align:right;font-weight:700" class="${cls}">${statusBadge} ${status}</div></div>`;
+  }).join('');
+  term.scrollTop = 0;
+}
+
+function renderAdvice(cards){
+  const el = document.getElementById('adviceList');
+  if(!cards || cards.length===0){ el.innerHTML = '<div class="empty">No advice yet.</div>'; return; }
+  el.innerHTML = cards.map(a=>{
+    const icon = a.type==='restock' ? '📦' : a.type==='campaign' ? '📣' : '🎁';
+    return `<div class="advice-card" style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:1.6rem">${icon}</div><div><h4>${a.product}</h4><div style="color:var(--muted)">${a.message}</div></div></div>`;
+  }).join('');
+}
+
+function renderUpsellTracker(suggested, accepted){
+  document.getElementById('upsellsSuggested').textContent = suggested;
+  document.getElementById('upsellsAccepted').textContent = accepted;
+  const pct = suggested>0 ? Math.round(accepted/suggested*100) : 0;
+  document.getElementById('upsellFill').style.width = pct + '%';
+}
+
+// controller: fetch audit + catalog and render
+async function refreshAll(){
+  const [audit, catalog] = await Promise.all([fetchJson(AUDIT_URL), fetchJson(CATALOG_URL)]);
+  const data = computeFromAudit(audit||[], catalog||[]);
+  renderMetrics(data);
+  renderProductTable(data.productRows);
+  renderTerminal(data.auditLogs);
+  renderUpsellTracker(data.upsellSuggestedCount, data.upsellAcceptedCount);
+}
+
+// advice call
+document.getElementById('getAdvice').addEventListener('click', async ()=>{
+  const btn = document.getElementById('getAdvice');
+  btn.disabled = true; btn.textContent = 'Thinking...';
+  try{
+    const res = await fetch(ADVICE_URL, {method:'POST'});
+    const json = await res.json();
+    if(json && Array.isArray(json.advice)){
+      renderAdvice(json.advice);
+    } else {
+      renderAdvice([]);
+    }
+  }catch(e){
+    // graceful fallback: show a basic auto advice card
+    renderAdvice([{
+      type:'campaign', product:'Store-wide Promo', message:'AI unreachable — consider a 10% promo this weekend to boost discovery.'
+    }]);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Get AI Advice';
+  }
+});
+
+// manual refresh
+document.getElementById('manualRefresh').addEventListener('click', refreshAll);
+document.getElementById('refreshBtn').addEventListener('click', refreshAll);
+
+// auto-refresh loops
+refreshAll();
+setInterval(refreshAll, 3000); // metrics 3s (table + overall)
+setInterval(async ()=>{ const a=await fetchJson(AUDIT_URL); if(a) renderTerminal((a||[])); }, 2000);
+
+</script>
+</body>
+</html>

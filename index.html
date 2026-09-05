@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AntiGravity Store - AI Voice Agent</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #040b14;
+            --bg-2: #071821;
+            --panel: rgba(10, 22, 31, 0.9);
+            --panel-strong: rgba(13, 26, 38, 0.96);
+            --panel-soft: rgba(255,255,255,0.03);
+            --card: rgba(19, 31, 41, 0.9);
+            --card-2: rgba(17, 27, 35, 0.9);
+            --border: rgba(126, 164, 198, 0.18);
+            --line: rgba(130, 196, 255, 0.15);
+            --text: #ebf7ff;
+            --muted: #88a1b8;
+            --muted-2: #6c7f92;
+            --brand: #95f0ff;
+            --brand-2: #5ebdf9;
+            --brand-3: #0a8fe0;
+            --success: #7af1c7;
+            --danger: #ff6d73;
+            --warning: #f7d46f;
+            --shadow: rgba(0, 0, 0, 0.35);
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background:
+                radial-gradient(circle at top center, rgba(23, 81, 111, 0.28), transparent 32%),
+                linear-gradient(180deg, #020a12 0%, #040b14 100%);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .page-shell {
+            width: min(1280px, calc(100% - 36px));
+            padding: 18px 0 30px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 14px 22px 18px;
+        }
+
+        .brand {
+            font-size: 1.06rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-mark {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(149,240,255,0.28), rgba(94,189,249,0.1));
+            border: 1px solid rgba(149,240,255,0.45);
+            position: relative;
+            box-shadow: 0 0 15px rgba(149,240,255,0.25);
+        }
+
+        .brand-mark::before {
+            content: "";
+            position: absolute;
+            inset: 5px;
+            border: 1px solid rgba(149,240,255,0.8);
+            border-radius: 50%;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+            color: rgba(235,247,255,0.8);
+            font-size: 0.8rem;
+        }
+
+        .nav-links a {
+            color: rgba(235,247,255,0.8);
+            text-decoration: none;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .circle-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            display: grid;
+            place-items: center;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(9, 18, 28, 0.96), rgba(7, 15, 23, 0.96));
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 18px 32px var(--shadow);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 22px;
+            padding: 26px 26px 20px;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 22% 24%, rgba(97, 189, 255, 0.12), transparent 22%);
+            pointer-events: none;
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 1;
+            padding: 8px 10px 8px 4px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+            font-size: 0.68rem;
+            letter-spacing: 0.14em;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--brand);
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2.3rem, 3vw, 3.5rem);
+            line-height: 0.97;
+            letter-spacing: -0.07em;
+            max-width: 560px;
+            color: var(--text);
+        }
+
+        .hero-copy p {
+            margin: 18px 0 0;
+            max-width: 620px;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.65;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            border-radius: 10px;
+            padding: 0 18px;
+            border: 1px solid transparent;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.82rem;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .button.primary {
+            background: linear-gradient(135deg, rgba(149,240,255,0.9), rgba(82,172,255,0.9));
+            color: #04212d;
+            box-shadow: 0 10px 18px rgba(90, 203, 255, 0.18);
+        }
+
+        .button.secondary {
+            background: rgba(255,255,255,0.02);
+            color: var(--text);
+            border-color: var(--border);
+        }
+
+        .feature-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .feature-pill {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.72rem;
+            border-radius: 999px;
+            padding: 8px 12px;
+        }
+
+        .hero-visual {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            min-height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        .visual-frame {
+            position: relative;
+            width: min(100%, 500px);
+            height: 360px;
+            border-radius: 22px;
+            background:
+                linear-gradient(180deg, rgba(17, 27, 37, 0.8), rgba(7, 13, 18, 0.9)),
+                radial-gradient(circle at 50% 10%, rgba(98, 202, 255, 0.20), transparent 32%);
+            border: 1px solid rgba(126, 164, 198, 0.18);
+            box-shadow: inset 0 0 40px rgba(100,180,255,0.08), 0 20px 30px rgba(0,0,0,0.28);
+            overflow: hidden;
+        }
+
+        .visual-frame::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(20, 35, 44, 0.72), rgba(11, 16, 25, 0.16));
+        }
+
+        .visual-frame::after {
+            content: "";
+            position: absolute;
+            inset: 13% 12% 14% 12%;
+            border-radius: 50%;
+            border: 1px solid rgba(149,240,255,0.2);
+            box-shadow: 0 0 35px rgba(149,240,255,0.06), inset 0 0 22px rgba(149,240,255,0.06);
+        }
+
+        .headphone-visual {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            z-index: 2;
+        }
+
+        .headphone-visual img {
+            width: 92%;
+            max-width: 360px;
+            filter: drop-shadow(0 20px 25px rgba(0,0,0,0.32));
+            transform: rotate(-2deg);
+        }
+
+        .section-wrap {
+            margin-top: 22px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            font-size: clamp(1.7rem, 2vw, 2.3rem);
+            letter-spacing: -0.06em;
+            color: var(--text);
+        }
+
+        .section-title p {
+            margin: 8px auto 0;
+            max-width: 700px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .curation-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 0.9fr;
+            gap: 26px;
+            padding: 18px 0 0;
+        }
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .product-card {
+            background: linear-gradient(180deg, rgba(15, 25, 32, 0.9), rgba(10, 20, 27, 0.9));
+            border: 1px solid rgba(160, 197, 225, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            padding: 0;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(149,240,255,0.28);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            display: block;
+            background: linear-gradient(135deg, rgba(30, 50, 70, 0.5), rgba(20, 40, 60, 0.5));
+            padding: 12px;
+        }
+
+        .product-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 12px 14px 14px;
+            color: var(--text);
+            flex: 1;
+        }
+
+        .product-name {
+            margin: 0;
+            font-size: 0.8rem;
+            color: rgba(235,247,255,0.9);
+            letter-spacing: -0.02em;
+            font-weight: 600;
+            line-height: 1.3;
+            word-break: break-word;
+            width: 100%;
+        }
+
+        .product-price {
+            font-size: 0.95rem;
+            color: var(--brand);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-top: 4px;
+        }
+
+        .recommend-panel {
+            background: rgba(15, 25, 32, 0.86);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px 18px 16px;
+        }
+
+        .mini-label {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(149,240,255,0.08);
+            border: 1px solid rgba(149,240,255,0.15);
+            color: var(--brand);
+            font-size: 0.67rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .recommend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            padding: 10px 0 4px;
+        }
+
+        .recommend-thumbnail {
+            width: 72px;
+            height: 72px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(149,240,255,0.12);
+        }
+
+        .recommend-thumbnail img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .recommend-copy {
+            flex: 1;
+        }
+
+        .recommend-copy h3 {
+            margin: 0;
+            font-size: 1rem;
+            letter-spacing: -0.04em;
+        }
+
+        .recommend-copy p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 0.76rem;
+            line-height: 1.5;
+        }
+
+        .recommend-price {
+            margin-top: 8px;
+            color: var(--brand);
+            font-weight: 700;
+        }
+
+        .ai-box {
+            margin-top: 20px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .ai-title {
+            color: var(--muted);
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .ai-suggestion {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 10px;
+            background: rgba(149,240,255,0.04);
+            border: 1px solid rgba(149,240,255,0.12);
+            border-radius: 12px;
+        }
+
+        .ai-suggestion strong {
+            font-size: 0.86rem;
+        }
+
+        .ai-suggestion span {
+            color: var(--brand);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .status-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+            color: var(--muted);
+            font-size: 0.74rem;
+            padding: 0 2px;
+        }
+
+        .status-tag {
+            color: var(--brand);
+            font-weight: 600;
+        }
+
+        .composer {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .composer input {
+            width: 100%;
+            min-height: 40px;
+            border: 1px solid rgba(149,240,255,0.12);
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+            color: var(--text);
+            padding: 0 12px;
+            outline: none;
+        }
+
+        .composer input::placeholder {
+            color: var(--muted-2);
+        }
+
+        .composer button {
+            border: 0;
+            border-radius: 10px;
+            min-height: 40px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(149,240,255,0.12);
+            color: var(--text);
+            padding: 0 14px;
+        }
+
+        .composer #sendBtn {
+            background: linear-gradient(135deg, rgba(149,240,255,0.9), rgba(82,172,255,0.9));
+            color: #05222c;
+            font-weight: 700;
+            border: none;
+        }
+
+        .audit-section {
+            padding: 20px 0 0;
+        }
+
+        .audit-layout {
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 20px;
+            align-items: start;
+            padding-top: 14px;
+        }
+
+        .terminal {
+            background: rgba(5, 13, 19, 0.96);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            min-height: 360px;
+            padding: 18px 18px 14px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+
+        .audit-trail {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 310px;
+            max-height: 360px;
+            overflow-y: auto;
+        }
+
+        .audit-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 10px;
+            align-items: center;
+            padding: 8px 8px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.015);
+            border: 1px solid rgba(255,255,255,0.02);
+            color: rgba(235,247,255,0.82);
+            font-size: 0.72rem;
+        }
+
+        .log-time {
+            color: var(--muted-2);
+        }
+
+        .log-action {
+            color: var(--brand);
+            font-weight: 700;
+        }
+
+        .log-detail {
+            color: rgba(235,247,255,0.8);
+        }
+
+        .status-success { color: var(--success); }
+        .status-error, .status-declined { color: var(--danger); }
+        .status-received { color: var(--warning); }
+
+        .audit-side {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .side-card {
+            background: rgba(15, 25, 32, 0.82);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+        }
+
+        .side-card h4 {
+            margin: 0 0 10px;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .mini-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            color: rgba(235,247,255,0.84);
+            font-size: 0.8rem;
+        }
+
+        .mini-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .mini-bullet {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--brand);
+            box-shadow: 0 0 16px rgba(149,240,255,0.65);
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(180px, 1fr));
+            gap: 18px;
+            margin-top: 24px;
+        }
+
+        .metric-card {
+            background: rgba(15, 25, 32, 0.82);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px 16px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: clamp(1.4rem, 2vw, 2rem);
+            letter-spacing: -0.06em;
+            color: var(--brand);
+            font-weight: 800;
+        }
+
+        .metric-label {
+            margin-top: 10px;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .cta {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 24px 0 10px;
+        }
+
+        footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 22px 8px 10px;
+            color: var(--muted-2);
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 18px;
+        }
+
+        .receipt-card {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: min(420px, calc(100vw - 24px));
+            background: rgba(7, 14, 20, 0.96);
+            border: 1px solid rgba(149,240,255,0.2);
+            border-radius: 18px;
+            box-shadow: 0 18px 38px rgba(0,0,0,0.35);
+            padding: 18px 18px 16px;
+            z-index: 20;
+            display: none;
+        }
+
+        .receipt-card.success {
+            border-color: rgba(122,241,199,0.35);
+            box-shadow: 0 18px 38px rgba(20, 58, 49, 0.28);
+        }
+
+        .receipt-card.error {
+            border-color: rgba(255,109,115,0.32);
+            box-shadow: 0 18px 38px rgba(76, 18, 22, 0.24);
+        }
+
+        .receipt-icon {
+            font-size: 1.7rem;
+            margin-bottom: 10px;
+        }
+
+        .receipt-title {
+            font-size: 1.2rem;
+            margin: 0;
+            letter-spacing: -0.04em;
+            color: var(--text);
+        }
+
+        .receipt-details {
+            margin: 12px 0 8px;
+            color: var(--muted);
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .receipt-amount {
+            margin-top: 10px;
+            color: var(--brand);
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+        }
+
+        .receipt-order-id {
+            margin-top: 12px;
+            display: inline-block;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: var(--muted);
+            border-radius: 999px;
+            padding: 7px 10px;
+            font-size: 0.68rem;
+            letter-spacing: 0.04em;
+            font-family: 'SFMono-Regular', Consolas, monospace;
+        }
+
+        .receipt-image {
+            width: 100%;
+            max-height: 130px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 0 0 14px;
+            border: 1px solid rgba(149,240,255,0.15);
+            display: none;
+        }
+
+        .hidden { display: none !important; }
+
+        .fallback-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(247, 212, 111, 0.08);
+            border: 1px solid rgba(247, 212, 111, 0.24);
+            color: var(--warning);
+            border-radius: 999px;
+            padding: 7px 10px;
+            font-size: 0.67rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-top: 12px;
+        }
+
+        .fallback-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--warning);
+            box-shadow: 0 0 10px rgba(247,212,111,0.5);
+        }
+
+        @media (max-width: 980px) {
+            .hero, .curation-grid, .audit-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .catalog-grid {
+                grid-template-columns: repeat(2, minmax(180px, 1fr));
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .page-shell {
+                width: min(100%, calc(100% - 14px));
+            }
+
+            .topbar {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero, .recommend-panel, .terminal, .side-card {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .catalog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .composer {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-row {
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <div class="brand">
+                <span class="brand-mark"></span>
+                <span>AntiGravity Store</span>
+            </div>
+
+            <nav class="nav-links" aria-label="Main nav">
+                <a href="#">Platform</a>
+                <a href="#">Merchants</a>
+                <a href="#">Pricing</a>
+                <a href="#">Demo</a>
+            </nav>
+
+            <div class="header-actions">
+                <div class="circle-btn">◌</div>
+                <div class="circle-btn">◍</div>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero panel">
+                <div class="hero-copy">
+                    <span class="eyebrow">Future of commerce</span>
+                    <h1>AI that shops for you — and grows revenue for merchants.</h1>
+                    <p>From voice prompts to secure conversational checkout, powered by AI and Razorpay. Experience frictionless shopping with budget-safe, merchant-aware recommendations.</p>
+
+                    <div class="hero-actions">
+                        <button class="button primary" id="demoButton" type="button">Try demo</button>
+                        <button class="button secondary" id="watchButton" type="button">Watch flow</button>
+                    </div>
+
+                    <div class="feature-row">
+                        <span class="feature-pill">AI Agent</span>
+                        <span class="feature-pill">Budget Safe</span>
+                        <span class="feature-pill">Razorpay Ready</span>
+                        <span class="feature-pill">Audit Trail</span>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="visual-frame">
+                        <div class="headphone-visual">
+                            <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=900&q=80" alt="AI shopping headphones" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-wrap">
+                <div class="section-title">
+                    <h2>Intelligent curation</h2>
+                    <p>Discover hyper-personalized products matched perfectly to user intent under budget constraints.</p>
+                </div>
+
+                <div class="curation-grid">
+                    <div id="catalogGrid" class="catalog-grid"></div>
+
+                    <aside class="recommend-panel">
+                        <div class="mini-label">Recommended</div>
+
+                        <div class="recommend-item">
+                            <div class="recommend-thumbnail">
+                                <img id="recommendImage" src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=600&q=80" alt="Recommended product" />
+                            </div>
+                            <div class="recommend-copy">
+                                <h3 id="recommendName">AntiGravity Wireless Headphones</h3>
+                                <p id="recommendText">Based on your query: gift for a friend under ₹600</p>
+                                <div class="recommend-price" id="recommendPrice">₹4,499</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-box">
+                            <div class="ai-title">AI growth suggestion</div>
+                            <div class="ai-suggestion">
+                                <strong id="aiSuggestionName">Gift Card</strong>
+                                <span id="aiSuggestionPrice">+₹99</span>
+                            </div>
+                        </div>
+
+                        <div class="status-line">
+                            <span>Remaining budget</span>
+                            <span class="status-tag" id="remainingBudget">₹101</span>
+                        </div>
+
+                        <div id="fallbackBadge" class="fallback-badge hidden">
+                            <span class="fallback-dot"></span>
+                            Local fallback mode
+                        </div>
+
+                        <div class="composer" style="margin-top: 16px;">
+                            <input id="textInput" type="text" placeholder="Type your shopping request" />
+                            <button id="micBtn" type="button" aria-label="Speak">🎤</button>
+                            <button id="sendBtn" type="button">Send</button>
+                        </div>
+
+                        <div id="status" class="status-line" style="margin-top: 14px; justify-content: flex-start; padding: 0;">
+                            Ready
+                        </div>
+                        <div id="transcript" style="margin-top: 8px; font-size: 0.78rem; color: var(--muted); min-height: 18px;">
+                            Awaiting your command...
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <section class="audit-section">
+                <div class="section-title">
+                    <h2>Transparent transaction logic</h2>
+                    <p>Every AI decision is logged, verified, and bounded by hard budget limits.</p>
+                </div>
+
+                <div class="audit-layout">
+                    <div class="terminal">
+                        <div class="audit-trail" id="auditTrail"></div>
+                    </div>
+
+                    <div class="audit-side">
+                        <div class="side-card">
+                            <h4>User input</h4>
+                            <ul class="mini-list">
+                                <li><span class="mini-bullet"></span> “I need a tech gift under ₹5000”</li>
+                                <li><span class="mini-bullet"></span> Voice + text input support</li>
+                                <li><span class="mini-bullet"></span> Intent extraction in real time</li>
+                            </ul>
+                        </div>
+
+                        <div class="side-card">
+                            <h4>AI decision</h4>
+                            <ul class="mini-list">
+                                <li><span class="mini-bullet"></span> Budget-validated product selection</li>
+                                <li><span class="mini-bullet"></span> Merchant-aware upsell suggestions</li>
+                                <li><span class="mini-bullet"></span> Safe decline on invalid asks</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="metrics">
+                <div class="metric-card">
+                    <div class="metric-value">+₹99</div>
+                    <div class="metric-label">Avg. upsell value</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">+₹129</div>
+                    <div class="metric-label">Bundle uplift</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">100%</div>
+                    <div class="metric-label">Budget-safe compliance</div>
+                </div>
+            </section>
+
+            <div class="cta">
+                <button class="button primary" type="button">Launch demo</button>
+                <button class="button secondary" type="button">View architecture</button>
+            </div>
+        </main>
+
+        <footer>
+            <span>© 2024 AntiGravity Store</span>
+            <span>Audit trail • Privacy • API docs</span>
+        </footer>
+    </div>
+
+    <div class="receipt-card hidden" id="receiptCard">
+        <div class="receipt-icon" id="receiptIcon">✅</div>
+        <img class="receipt-image" id="receiptImage" src="" alt="Product">
+        <h3 class="receipt-title" id="receiptTitle">Order Confirmed</h3>
+        <p class="receipt-details" id="receiptDesc">Product Name</p>
+        <div class="receipt-amount" id="receiptAmount">₹0</div>
+        <div class="receipt-order-id" id="receiptOrderId">Order ID: -</div>
+    </div>
+
+    <script>
+        const micBtn = document.getElementById('micBtn');
+        const statusEl = document.getElementById('status');
+        const transcriptEl = document.getElementById('transcript');
+        const auditTrailEl = document.getElementById('auditTrail');
+        const textInput = document.getElementById('textInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const recommendNameEl = document.getElementById('recommendName');
+        const recommendTextEl = document.getElementById('recommendText');
+        const recommendPriceEl = document.getElementById('recommendPrice');
+        const recommendImageEl = document.getElementById('recommendImage');
+        const aiSuggestionNameEl = document.getElementById('aiSuggestionName');
+        const aiSuggestionPriceEl = document.getElementById('aiSuggestionPrice');
+        const fallbackBadge = document.getElementById('fallbackBadge');
+        const remainingBudgetEl = document.getElementById('remainingBudget');
+        const catalogGrid = document.getElementById('catalogGrid');
+
+        function setFallbackVisibility(data) {
+            if (data && data.used_fallback) {
+                fallbackBadge.classList.remove('hidden');
+                statusEl.textContent = 'Local fallback active — budget-safe recommendation engine';
+            } else {
+                fallbackBadge.classList.add('hidden');
+            }
+        }
+
+        function updateRecommendationCard(product) {
+            if (!product) return;
+            recommendImageEl.src = product.image;
+            recommendNameEl.textContent = product.name;
+            recommendTextEl.textContent = `Based on your query: ${product.category || 'smart recommendation'}`;
+            recommendPriceEl.textContent = `₹${product.price}`;
+        }
+
+        function updateSuggestionMeta(data) {
+            if (!data) return;
+            const upsells = data.upsell_suggestions || [];
+            const bundle = data.bundle_suggestion;
+            if (upsells.length > 0) {
+                aiSuggestionNameEl.textContent = upsells[0].name;
+                aiSuggestionPriceEl.textContent = `+₹${upsells[0].price}`;
+            } else if (bundle) {
+                aiSuggestionNameEl.textContent = bundle.name;
+                aiSuggestionPriceEl.textContent = `+₹${bundle.total}`;
+            } else {
+                aiSuggestionNameEl.textContent = 'No add-on';
+                aiSuggestionPriceEl.textContent = '+₹0';
+            }
+
+            if (data.remaining_budget !== undefined) {
+                remainingBudgetEl.textContent = `₹${data.remaining_budget}`;
+            }
+
+            setFallbackVisibility(data);
+        }
+
+        async function loadCatalog() {
+            try {
+                const res = await fetch('/catalog');
+                const products = await res.json();
+                catalogGrid.innerHTML = products.map(p => `
+                    <div class="product-card">
+                        <img src="${p.image}" alt="${p.name}">
+                        <div class="product-meta">
+                            <p class="product-name">${p.name}</p>
+                            <div class="product-price">₹${p.price}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                if (products.length > 0) {
+                    updateRecommendationCard(products[0]);
+                }
+            } catch (e) {
+                console.error('Failed to load catalog', e);
+            }
+        }
+
+        loadCatalog();
+
+        function setThinkingState(text, isVoice = false) {
+            receiptCard.classList.add('hidden');
+            transcriptEl.textContent = text;
+            statusEl.textContent = 'Processing with Gemini AI...';
+            sendBtn.disabled = true;
+            micBtn.disabled = true;
+            if (!isVoice) micBtn.classList.remove('listening');
+        }
+
+        function setReadyState() {
+            sendBtn.disabled = false;
+            micBtn.disabled = false;
+            textInput.value = '';
+            statusEl.textContent = 'Ready';
+            micBtn.classList.remove('listening');
+            micBtn.textContent = '🎤';
+        }
+
+        sendBtn.addEventListener('click', async () => {
+            const text = textInput.value.trim();
+            if (!text) return;
+            setThinkingState(`You typed: "${text}"`, false);
+            await sendToAgent(text);
+            setReadyState();
+        });
+
+        textInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendBtn.click();
+        });
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            statusEl.textContent = 'Speech Recognition not supported. Try Chrome or Edge.';
+            micBtn.disabled = true;
+        } else {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'en-IN';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = () => {
+                statusEl.textContent = 'Listening... Speak now.';
+                micBtn.textContent = '🛑';
+                micBtn.classList.add('listening');
+                receiptCard.classList.add('hidden');
+            };
+
+            recognition.onresult = async (event) => {
+                const speechResult = event.results[0][0].transcript;
+                setThinkingState(`You said: "${speechResult}"`, true);
+                await sendToAgent(speechResult);
+                setReadyState();
+            };
+
+            recognition.onerror = () => {
+                statusEl.textContent = 'Error: microphone unavailable';
+                setReadyState();
+            };
+
+            recognition.onspeechend = () => recognition.stop();
+
+            micBtn.addEventListener('click', () => {
+                if (micBtn.classList.contains('listening')) {
+                    recognition.stop();
+                } else {
+                    recognition.start();
+                }
+            });
+        }
+
+        function displayReceipt(data) {
+            receiptCard.classList.remove('hidden');
+
+            let itemsHtml = '';
+            let total = 0;
+
+            if (data.chosen_products && data.chosen_products.length > 0) {
+                itemsHtml = '<div style="text-align: left; margin-bottom: 14px; padding: 12px 10px; background: rgba(255,255,255,0.03); border-radius: 10px;">';
+                data.chosen_products.forEach(p => {
+                    itemsHtml += `<div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;font-size:13px;">
+                        <span>${p.name}</span>
+                        <strong>₹${p.price}</strong>
+                    </div>`;
+                    total += p.price;
+                });
+                itemsHtml += '</div>';
+            }
+
+            if (data.upsell_suggestions && data.upsell_suggestions.length > 0) {
+                const upsells = data.upsell_suggestions.map(item => `${item.name} (₹${item.price})`).join(', ');
+                itemsHtml += `<div style="text-align:left;margin-top:10px;padding:10px;background:rgba(149,240,255,0.05);border-radius:10px;border:1px solid rgba(149,240,255,0.18);font-size:13px;">${upsells}</div>`;
+            }
+
+            if (data.bundle_suggestion) {
+                const bundle = data.bundle_suggestion;
+                itemsHtml += `<div style="text-align:left;margin-top:10px;padding:10px;background:rgba(122,241,199,0.04);border-radius:10px;border:1px solid rgba(122,241,199,0.25);font-size:13px;">Campaign Bundle: ${bundle.name} · ₹${bundle.total}</div>`;
+            }
+
+            if (data.checkout && data.checkout.status === 'success') {
+                receiptCard.className = 'receipt-card success';
+                receiptIcon.style.display = 'none';
+                if (data.chosen_products.length === 1) {
+                    receiptImage.style.display = 'block';
+                    receiptImage.src = data.chosen_products[0].image;
+                } else {
+                    receiptImage.style.display = 'none';
+                }
+
+                receiptTitle.textContent = 'Order Confirmed!';
+                receiptDesc.innerHTML = itemsHtml;
+                receiptAmount.textContent = `Total: ₹${total}`;
+                receiptOrderId.textContent = `Razorpay ID: ${data.checkout.order_id}`;
+                receiptOrderId.style.display = 'inline-block';
+            } else {
+                receiptCard.className = 'receipt-card error';
+                receiptIcon.style.display = 'block';
+                receiptIcon.textContent = '🛑';
+                receiptImage.style.display = 'none';
+                receiptTitle.textContent = 'Purchase Declined';
+                receiptDesc.innerHTML = `<p style="color: var(--danger); margin-bottom: 12px; font-weight: 500;">${data.reason || 'Could not complete purchase.'}</p>${itemsHtml}`;
+                receiptAmount.textContent = `Total: ₹${total}`;
+                receiptOrderId.style.display = 'none';
+            }
+        }
+
+        async function sendToAgent(intent) {
+            try {
+                const response = await fetch('/agent/buy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ intent: intent, budget: 600 })
+                });
+                const data = await response.json();
+
+                if (data && data.recommendations) {
+                    statusEl.textContent = data.recommendations.upsells && data.recommendations.upsells.length
+                        ? `Revenue-aware suggestion: ${data.recommendations.upsells.map(x => x.name).join(', ')}`
+                        : 'Budget-safe purchase completed';
+                }
+
+                updateSuggestionMeta(data);
+                if (data.chosen_products && data.chosen_products.length > 0) {
+                    updateRecommendationCard(data.chosen_products[0]);
+                }
+
+                fetchAuditTrail();
+                speak(data.final_message || data.reason);
+                displayReceipt(data);
+            } catch (error) {
+                console.error(error);
+                statusEl.textContent = 'Failed to connect to server.';
+            }
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-IN';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        async function fetchAuditTrail() {
+            try {
+                const response = await fetch('/audit');
+                const logs = await response.json();
+                if (logs.length === 0) {
+                    auditTrailEl.innerHTML = '<div class="audit-item"><span class="log-time">[idle]</span><span class="log-action">WAITING</span><span class="log-detail">No activity yet.</span></div>';
+                    return;
+                }
+
+                auditTrailEl.innerHTML = logs.map(log => {
+                    const resultClass = log.result ? log.result.toLowerCase() : 'unknown';
+                    return `
+                        <div class="audit-item">
+                            <span class="log-time">[${log.timestamp}]</span>
+                            <span class="log-action">${log.action}</span>
+                            <span class="log-detail">${log.detail}</span>
+                            <span class="status-${resultClass}">(${log.result})</span>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                console.error('Audit fetch failed', e);
+            }
+        }
+
+        fetchAuditTrail();
+        setInterval(fetchAuditTrail, 2000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+[
+  {
+    "id": "p001",
+    "name": "AntiGravity Wireless Headphones",
+    "price": 499,
+    "category": "audio",
+    "tags": ["gift", "premium", "wireless", "birthday"],
+    "stock": 10,
+    "description": "Noise cancelling headphones with 30hr battery",
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop"
+  },
+  {
+    "id": "p002",
+    "name": "Mechanical Keyboard Pro",
+    "price": 899,
+    "category": "electronics",
+    "tags": ["typing", "premium", "work"],
+    "stock": 5,
+    "description": "RGB mechanical keyboard with tactile switches",
+    "image": "https://images.unsplash.com/photo-1595225476474-87563907a212?w=500&auto=format&fit=crop"
+  },
+  {
+    "id": "p003",
+    "name": "Smart Water Bottle",
+    "price": 350,
+    "category": "fitness",
+    "tags": ["gift", "health", "hydration", "birthday"],
+    "stock": 20,
+    "description": "Tracks your daily water intake and glows to remind you",
+    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500&auto=format&fit=crop"
+  },
+  {
+    "id": "p004",
+    "name": "Ergonomic Mouse",
+    "price": 550,
+    "category": "electronics",
+    "tags": ["work", "comfort"],
+    "stock": 15,
+    "description": "Vertical mouse to prevent wrist strain",
+    "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&auto=format&fit=crop"
+  },
+  {
+    "id": "p005",
+    "name": "Aromatherapy Diffuser",
+    "price": 400,
+    "category": "home",
+    "tags": ["gift", "relax", "birthday", "anniversary"],
+    "stock": 8,
+    "description": "Ultrasonic diffuser with 7 LED color lights",
+    "image": "https://images.unsplash.com/photo-1608528577891-eb05f8841ef9?w=500&auto=format&fit=crop"
+  },
+  {
+    "id": "p006",
+    "name": "AntiGravity Travel Pouch",
+    "price": 129,
+    "category": "accessories",
+    "tags": ["gift", "travel", "birthday", "compact"],
+    "stock": 30,
+    "description": "Protective pouch for headphones and accessories",
+    "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop"
+  },
+  {
+    "id": "p007",
+    "name": "USB-C Fast Charger",
+    "price": 149,
+    "category": "electronics",
+    "tags": ["work", "travel", "tech", "gift"],
+    "stock": 25,
+    "description": "Fast charging companion for daily gadgets",
+    "image": "https://images.unsplash.com/photo-1591290619762-d71fbb45e0f5?w=500&auto=format&fit=crop"
+  },
+  {
+    "id": "p008",
+    "name": "Desk Mat Pro",
+    "price": 199,
+    "category": "work",
+    "tags": ["work", "desk", "productivity", "gift"],
+    "stock": 18,
+    "description": "Comfortable desk mat for focused work sessions",
+    "image": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=500&auto=format&fit=crop"
+  },
+  {
+    "id": "p009",
+    "name": "Gift Card",
+    "price": 99,
+    "category": "gift",
+    "tags": ["gift", "birthday", "anniversary", "bonus"],
+    "stock": 50,
+    "description": "Perfect add-on for gifting and celebratory moments",
+    "image": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500&auto=format&fit=crop"
+  },
+  {
+    "id": "p010",
+    "name": "Wellness Keychain",
+    "price": 109,
+    "category": "fitness",
+    "tags": ["health", "gift", "wellness", "daily"],
+    "stock": 22,
+    "description": "Compact wellness reminder accessory for everyday carry",
+    "image": "https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=500&auto=format&fit=crop"
+  }
+]
